@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Virtual Networking.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="virtual-networking---networking-modes">Virtual Networking - Networking Modes</h1>
+<p>In VirtualBox you can add a Network Adapter for a VM. It will result in a NIC created for that VM. But while creating adapter, you need to specify <strong>Networking Mode</strong>.</p>
+<blockquote>
+<p>Note that VM can have multiple interfaces added, and it is not required for them to have the same network mode</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>Networking modes:</p>
+<ul>
+<li><strong>Not attached</strong> - VM has a NIC, but there is no link present. This is as if no cable was plugged in the card. Use this mode if you want your VM to be isolated from any networking concepts.</li>
+<li><strong>NAT</strong> - Use this mode if you want your VM to have Internet connection and you don't care about nothing more. Because of its ease this is the default configuration.</li>
+<li><strong>Bridged Networking</strong> - Use this mode if you want your VM to act as a separate PC connected your you LAN network.</li>
+<li><strong>Internal Networking</strong> - Use this mode if you want to create a software-based network which is visible to selected VMs, but not to the Host or to the outside world.</li>
+<li><strong>NAT Networking</strong> - Special type of Internal Networking, which allows connection to the outside world.</li>
+<li><strong>Host-Only Networking</strong>- Use this mode if you want to create a network containing set of selected VMs and the host.</li>
+</ul>
+<h2 id="specification">Specification</h2>
+<h3 id="introduction">Introduction</h3>
+<p>In general the PC on which you have the VirtualBox installed (the <strong>host</strong> machine) is connected to some Local Area Network (<strong>LAN</strong>).</p>
+<p><em>LAN</em> apart from your PC can contain other users PCs, laptops, WI-FI hotspots by which users can connect mobile phones to the LAN, switch which connects all of the network nodes, and the router which is the gateway for the outside world.</p>
+<h3 id="nat">NAT</h3>
+<p>VM acts like a real PC connected to the Internet through a router. The router in this case is <strong>VirtualBox Networking Engine</strong>, which maps traffic from and to the VM. NAT means &quot;Network Address Translation&quot;.</p>
+<img src="img/1.png" style="zoom:55%;" />
+<p>Packets sent from VM are received by <em>VirtualBox Nat Engine</em>, which extracts the TCP/IP data and resends it using Host operating system. To the outside world (an application on host, a pc in LAN, for Internet) it looks like the packet was sent by VirtualBox application on the <em>host</em> (using <em>host</em> machine IP address). VirtualBox listens for replies to the packets sent, repacks them and resends them to the VM.</p>
+<blockquote>
+<p>Note that your LAN network is invisible outside the router. Internet knows only your router (because it has assigned IP from your ISP). It makes your LAN a <strong>private network</strong>, it is invisible and unreachable from the Internet.</p>
+</blockquote>
+<p>Much like a private network behind a router, the VM is invisible and unreachable from the Internet. You cannot run a server this way.</p>
+<p><strong>Network from VM point of view</strong></p>
+<img src="img/2.png" style="zoom:55%;" />
+<p>From VM point of view it just has an Internet connection.</p>
+<p>///TODO can you ping VM from LAN????</p>
+<p><strong>Security</strong></p>
+<p>VirtualBox places a &quot;router&quot; between each VM with NAT adapter, so every VM is isolated.</p>
+<h3 id="bridged-networking">Bridged Networking</h3>
+<p>VirtualBox uses a device driver on your host OS that filters data from your physical NIC. This driver is called <strong>Net Filter</strong> driver. This way VirtualBox can intercept packets from physical NIC and inject data into it, effectively creating a new NIC in software. When VM uses this new NIC, it looks to the host system (and others devices in LAN) as thought the VM is physically connected to the host NIC using network cable.</p>
+<img src="img/3.png" style="zoom:55%;" />
+<p>The term &quot;Attached to Bridged Adapter&quot; really fits here. Under <code>Name</code> you select to which of your PC's adapters/NIC you want to add <em>Net filter</em> for your VM.</p>
+<img src="img/4.png" style="zoom:100%;" />
+<p><strong>Network from VM point of view</strong></p>
+<img src="img/5.png" style="zoom:55%;" />
+<p>For VM it appears that it is connected to the same LAN as host machine.</p>
+<p><strong>Security</strong></p>
+<p>All traffic goes through a physical interface on host system.  It is therefore possible to attach a packet sniffer such as Wireshark to the host interface and log all traffic that goes over it.</p>
+<h3 id="internal-networking">Internal Networking</h3>
+<p>If you create a single VM with adapter attached to &quot;Internal Networking&quot; this VM resulting state would be the same as if with <em>Not attached</em> adapter. But if you create second VM and attach its &quot;Internal  Networking&quot; adapter to the same Internal Network,  the <strong>VirtualBox Support Driver</strong> will automatically &quot;wire&quot; the adapters and act as a Ethernet Switch, hiding all the data from both LAN and even host OS.</p>
+<img src="img/6.png" style="zoom:55%;" />
+<p>Internal networks are created automatically as needed. There is no central configuration. Every internal network is simply identified by its name, and is created if there is more than one active VM NIC with the same <code>Internal Network Name</code>.</p>
+<p><strong>Network from VM point of view</strong></p>
+<img src="img/7.png" style="zoom:55%;" />
+<blockquote>
+<p>All 4 VMs have Internal Networking Adapter with the same <code>Internet Network Name</code> assigned.</p>
+</blockquote>
+<p>As you can see VMs can only reach it selves. Because no physical interface is present, VMs cannot talk to the outside world.</p>
+<p><strong>Security</strong></p>
+<p>Even though technically, everything that can be done using internal networking can also be done using bridged networking, there are security advantages with internal networking.</p>
+<p>If for any reason, you want two or more VMs on the same machine to communicate privately, bridged networking is not an option, because of the traffic going through sniffable physical NIC.</p>
+<p>With internal networking data being exchanged between the machines is hided from the PC user and even from the PC OS.</p>
+<p>Network between VMs is completely isolated from everything.</p>
+<h3 id="host-only-networking">Host-Only Networking</h3>
+<p>VirtualBox creates a new software NIC on the host which appears next host's existing network interfaces. But this interface is a <strong>loopback interface</strong>.</p>
+<p>As you know loopback interface is used for communication between processes &quot;intra-OS&quot;. For that reason VMs with Host-Only interface can talk to other VM with such adapter, with the host OS, but cannot reach outside world.</p>
+<img src="img/8.png" style="zoom:55%;" />
+<blockquote>
+<p>This type of networking is useful for preconfigured virtual appliances, where multiple VMs are shipped together and designed to cooperate. For example one VM may be a web server, and a second one a database. We can create:</p>
+<ul>
+<li>Host-Only Network for them two, so they can talk to each other and to host OS (for debugging, logs etc..)</li>
+<li>Bridged Network for VM with web server, so it can expose its service for the world</li>
+</ul>
+<p>But the outside world won't be able to connect to the database</p>
+</blockquote>
+<p><strong>Network from VM point of view</strong></p>
+<img src="img/9.png" style="zoom:55%;" />
+<p>So the VMs with Host-Only adapters are all connected to each other, but due to it all happening on the <em>loopback</em> interface, also Host has access to this network.</p>
+<p><strong>Security</strong></p>
+<p>All traffic between the VMs happens on the loopback interface, and whereas with internal networking, it cannot be seen, the traffic on the loopback interface can be intercepted by the host OS. But sometimes it is handy to have Host OS attached to this network.</p>
+<h3 id="more-specific-specification">More specific specification</h3>
+<p>//TODO</p>
+<p>Nice picture of  Host Only Network --&gt; https://www.nakivo.com/blog/virtualbox-network-setting-guide/</p>
+
+</body>
+</html>
